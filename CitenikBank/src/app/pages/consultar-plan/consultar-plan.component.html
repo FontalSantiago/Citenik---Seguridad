@@ -1,0 +1,91 @@
+<div class="container-fluid">
+    <div class="abs-center">
+        <div class="row">
+            <form class="row g-3">
+
+                <!-- Seccion de Consulta de clientes -->
+                <h3 class="text-white">Consultar plan</h3>
+                <div class="row">
+                    <!-- Busqueda de clientes por filtro de texto -->
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                        <div class="form-outline input-group" data-toggle="tooltip" data-placement="top" title="Buscar">
+                            <span class="input-group-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-search" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                            </span>
+                            <input type="text" class="form-control" id="filtroBusqueda" (keyup)="esFiltrar($event)"
+                                placeholder="Nombre, TNA, Cuotas, Costos, Montos, Edad"
+                                title="Nombre, TNA, Cuotas, Costos, Montos, Edad">
+                        </div>
+                        <br>
+                        <!-- Busqueda de clientes por filtro de fecha de vigencia -->
+                        <div class="col-xs-6 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                            <div class="form-outline input-group" data-toggle="tooltip" data-placement="top"
+                                title="Buscar">
+                                <div class="form-outline input-group mb-3" id="datepicker">
+                                    <span class="input-group-text">Fecha</span>
+                                    <input type="date" id="datetime" class="form-control"
+                                        (change)="esFiltrarVigencia($event)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Tabla de planes filtrados -->
+                <div class="col-12 table-responsive">
+                    <table class="table table-hover text-center mb-0 fondo" *ngIf="validarFiltrado() == true">
+                        <thead class="bg-white">
+                            <tr>
+                                <th (click)="ordenarPor('nombre')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="nombre">Nombre {{ordenarIcono('nombre')}}</th>
+                                <th (click)="ordenarPor('tna')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="tna">TNA {{ordenarIcono('tna')}}</th>
+                                <th (click)="ordenarPor('cuotasMin')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="cuotasMin">Cuota Mín {{ordenarIcono('cuotasMin')}}</th>
+                                <th (click)="ordenarPor('cuotasMax')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="cuotasMax">Cuota Máx {{ordenarIcono('cuotasMax')}}</th>
+                                <th (click)="ordenarPor('costoOtorgamiento')" [appSort]="PlanesFiltrados"
+                                    data-order="desc" data-name="costoOtorgamiento">Costo
+                                    {{ordenarIcono('costoOtorgamiento')}}</th>
+                                <th (click)="ordenarPor('montoMin')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="montoMin">Monto Mín {{ordenarIcono('montoMin')}}</th>
+                                <th (click)="ordenarPor('montoMax')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="montoMax">Monto Máx {{ordenarIcono('montoMax')}}</th>
+                                <th (click)="ordenarPor('edadMax')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="edadMax">Edad Máxima {{ordenarIcono('edadMax')}}</th>
+                                <th (click)="ordenarPor('vigenciaDesde')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="vigenciaDesde">Vigencia Desde
+                                    {{ordenarIcono('vigenciaDesde')}}</th>
+                                <th (click)="ordenarPor('vigenciaHasta')" [appSort]="PlanesFiltrados" data-order="desc"
+                                    data-name="vigenciaHasta">Vigencia Hasta
+                                    {{ordenarIcono('legvigenciaHastaajo')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let plan of PlanesFiltrados && PlanesFiltrados" class="text-white">
+                            <tr>
+                                <td class="izquierda"> {{plan.nombre}}</td>
+                                <td class="derecha"> {{plan.tna | number: '1.2-2':'es-Ar'}}%</td>
+                                <td class="derecha"> {{plan.cuotasMin}}&nbsp;</td>
+                                <td class="derecha">{{plan.cuotasMax}}&nbsp;</td>
+                                <td class="derecha">${{plan.costoOtorgamiento | number: '1.2-2':'es-Ar'}}</td>
+                                <td class="derecha">${{plan.montoMin | number: '1.2-2':'es-Ar'}}&nbsp;&nbsp;</td>
+                                <td class="derecha">${{plan.montoMax | number: '1.2-2':'es-Ar'}}&nbsp;&nbsp;&nbsp;</td>
+                                <td>{{plan.edadMax}}</td>
+                                <td>{{plan.vigenciaDesde | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{plan.vigenciaHasta | date: 'dd/MM/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="alert alert-primary text-center" role="alert" *ngIf="validarFiltrado() == false">
+                    ¡No se ha encontrado ningún Plan!
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
